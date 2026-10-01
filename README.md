@@ -181,3 +181,33 @@ To do this, implement `save_rdd_to_file(rdd: RDD, output_path: str) -> None` fun
 red: 5.5
 white: 1.8
 ```
+
+## Results
+
+### How to run
+
+```bash
+python -m pytest
+python main.py
+python visualize.py
+```
+
+`main.py` saves the analysis to `output/`, and `visualize.py` builds the charts in `img/`.
+
+### Quality distribution
+
+Most wines are rated 5 or 6. Very good (8–9) and very poor (3) wines are rare.
+
+![Distribution of wine quality scores](img/quality_distribution.png)
+
+![Quality scores by wine type](img/quality_by_type.png)
+
+### Alcohol content
+
+High-quality wines (quality >= 7) contain on average **11.43%** alcohol, while low-quality wines (quality <= 4) contain **10.18%**. Better wines tend to be stronger.
+
+![Average alcohol content: low vs high quality](img/alcohol_by_quality.png)
+
+Red and white wines have almost the same average alcohol content: **10.42%** and **10.51%**.
+
+![Average alcohol content by wine type](img/alcohol_by_type.png)
