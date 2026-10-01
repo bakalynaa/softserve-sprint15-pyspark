@@ -1,0 +1,40 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: ⚙️ Setup Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: ⚙️ Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: PySpark tests
+      id: pyspark-tests
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: pyspark-tests
+        setup-command: |
+          sudo apt update && sudo apt install -y procps
+          pip install -r requirements.txt
+        command: pytest
+        timeout: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        PYSPARK-TESTS_RESULTS: "${{steps.pyspark-tests.outputs.result}}"
+      with:
+        runners: pyspark-tests
